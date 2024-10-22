@@ -12,20 +12,9 @@ $message = "";
         if($conn->query($sql)===TRUE){
             $message = "Novo tutor inserido com sucesso";
         } else {
-            $message =  "Erro: " .$sql . "<br>" .$conn->error;
+            $message = "Erro: " . $sql . "<br>" . $conn->error;
+
         }
     
 }
-//DELETAR USUARIO
-    if (isset($_POST['delete']) && isset($_POST['id'])) {
-        $id = intval($_POST['delete']);
-        $sql = "DELETE FROM owners WHERE id=$id";
-        
-        if ($conn->query($sql) === TRUE) {
-            $message = "Usuário excluído com sucesso";
-        } else {
-            $message = "Erro: " . $sql . "<br>" . $conn->error;
-        }
-    }
-
 ?> 

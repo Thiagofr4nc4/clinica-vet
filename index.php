@@ -1,23 +1,24 @@
 <?php
-    include "funcoes.php";
+    include "inserirNovoUsuario.php";
 
     $sql = "SELECT id, name, contact FROM owners";
     $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
-<html lang="pt-Br">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciador de Tarefas</title>
     <link rel="stylesheet" type="text/css" href="estilo.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Cadastro Tutor</h1>
         <br>
-        <form method="POST">
+        <form method="POST" id="cadastroTutor">
             <label>Nome do tutor: </label>
             <input type="text" name="nome" required>
             <br>
