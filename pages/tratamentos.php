@@ -10,54 +10,72 @@ $stmt->execute();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Tratamentos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
-    <a href="home.php">Tela inicial</a>
-    <form method="POST" id="cadastrarPaciente">
-        <label for="paciente">Paciente Id</label>
-        <select name="paciente" id="pacientes">
-            <option disabled selected>Selecione o Paciente</option>
-            <?php include "../Treatments/carregar_pacientes.php"; ?>
-        </select>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="home.php">Tela Inicial</a>
+    </nav>
 
-        <label for="descricao">Descrição</label>
-        <textarea name="descricao" id="descricao" rows="5" cols="40"></textarea>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Cadastro de Tratamento</h2>
+        <form method="POST" id="cadastrarPaciente">
+            <div class="form-group">
+                <label for="paciente">Paciente</label>
+                <select class="form-control" name="paciente" id="pacientes" required>
+                    <option disabled selected>Selecione o Paciente</option>
+                    <?php include "../Treatments/carregar_pacientes.php"; ?>
+                </select>
+            </div>
 
-        <label for="data">Data</label>
-        <input type="date" name="data" id="data">
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea class="form-control" name="descricao" id="descricao" rows="3" required></textarea>
+            </div>
 
-        <button type="button" id="cadastrarTratamento">Enviar</button>
-    </form>
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" class="form-control" name="data" id="data" required>
+            </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Id Tratamento</th>
-                <th>Id Paciente</th>
-                <th>Descrição</th>
-                <th>Data</th>
-            </tr>
-        </thead>
-        <tbody id="tabelaTratamentos">
-            <?php if ($stmt->rowCount() > 0): ?>
-                <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['patient_id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['description']); ?></td>
-                        <td><?php echo htmlspecialchars($row['date']); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
+            <button class="btn btn-primary btn-block" type="button" id="cadastrarTratamento">Cadastrar
+                Tratamento</button>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Lista de Tratamentos</h2>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <td colspan="4">Nenhum Tratamento encontrado</td>
+                    <th scope="col">Id Tratamento</th>
+                    <th scope="col">Id Paciente</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Data</th>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="tabelaTratamentos">
+                <?php if ($stmt->rowCount() > 0): ?>
+                    <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+                        <tr>
+                            <th scope="row"><?php echo htmlspecialchars($row['id']); ?></th>
+                            <td><?php echo htmlspecialchars($row['patient_id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['description']); ?></td>
+                            <td><?php echo htmlspecialchars($row['date']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="4" class="text-center">Nenhum Tratamento encontrado</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         $(document).ready(function () {
@@ -77,7 +95,6 @@ $stmt->execute();
                         try {
                             var res = JSON.parse(response);
                             if (res.status === 'success') {
-                                // Recarregar a tabela de tratamentos
                                 carregarTratamentos();
                                 $('#cadastrarPaciente')[0].reset();
                             } else {
@@ -87,7 +104,7 @@ $stmt->execute();
                             console.error("Resposta inesperada: ", response);
                             alert("Ocorreu um erro ao processar a resposta.");
                         }
-                    }, // Adicione a vírgula aqui
+                    },
                     error: function () {
                         alert("Erro ao cadastrar tratamento.");
                     }
@@ -114,7 +131,7 @@ $stmt->execute();
                                     );
                                 });
                             } else {
-                                $('#tabelaTratamentos').append('<tr><td colspan="4">Nenhum Tratamento encontrado</td></tr>');
+                                $('#tabelaTratamentos').append('<tr><td colspan="4" class="text-center">Nenhum Tratamento encontrado</td></tr>');
                             }
                         } catch (e) {
                             console.error("Erro ao carregar tratamentos: ", response);
@@ -127,10 +144,16 @@ $stmt->execute();
                 });
             }
 
-            // Chamar carregarTratamentos ao iniciar a página
             carregarTratamentos();
         });
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
