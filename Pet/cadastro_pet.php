@@ -44,8 +44,8 @@ include "../Dono/inserir_novo_usuario.php"; // Inclui o código para inserir o n
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="../pages/home.php">Tela Inicial</a>
+        <a class="navbar-brand" href="../Pages/tratamentos.php">Tela Tratamentos</a>
     </nav>
-
     <div class="container form-container">
         <h2>Cadastro de Pet</h2>
         <form id="cadastroPet" method="POST" class="border p-4 rounded bg-white">
